@@ -30,6 +30,7 @@
 
 - (void)setFruitName:(NSString *)fruitName
 {
+    NSLog(@"## %@ - %@", NSStringFromSelector(_cmd), self);
     self.label.text = fruitName;
     _fruitName = fruitName;
     

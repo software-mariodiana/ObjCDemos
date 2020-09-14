@@ -63,6 +63,9 @@
 {
     [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForCell:sender] animated:NO];
     DetailViewController* dvc = [segue destinationViewController];
+    
+    // Remember, at this point in the segue no widgets have been instantiated
+    // in the destination view controller!
     [dvc setFruitName:[[sender textLabel] text]];
 }
 
