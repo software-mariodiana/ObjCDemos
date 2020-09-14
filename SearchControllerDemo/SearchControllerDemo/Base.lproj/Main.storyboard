@@ -18,6 +18,19 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hx5-hv-DO1">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReuseIdentifier" id="BXg-d6-MZJ">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BXg-d6-MZJ" id="Fob-Ke-A7q">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="t3g-Ro-xw0" kind="show" id="rfO-UL-9cp"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="wzZ-lw-6xM"/>
                                 </connections>
@@ -40,6 +53,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="876.81159420289862" y="178.79464285714286"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="XHj-p7-hyM">
+            <objects>
+                <viewController storyboardIdentifier="Detail View Controller Scene" id="t3g-Ro-xw0" customClass="DetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fbh-GU-cGJ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Diy-lF-1yH">
+                                <rect key="frame" x="20" y="438" width="374" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="CPI-Fp-65z" firstAttribute="trailing" secondItem="Diy-lF-1yH" secondAttribute="trailing" constant="20" id="jLU-Py-ics"/>
+                            <constraint firstItem="Diy-lF-1yH" firstAttribute="centerY" secondItem="Fbh-GU-cGJ" secondAttribute="centerY" id="yHU-IE-0Vn"/>
+                            <constraint firstItem="Diy-lF-1yH" firstAttribute="leading" secondItem="CPI-Fp-65z" secondAttribute="leading" constant="20" id="zvu-FI-1av"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="CPI-Fp-65z"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="xSE-Dt-3iF"/>
+                    <connections>
+                        <outlet property="label" destination="Diy-lF-1yH" id="HgZ-7Z-g3W"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T7E-M1-CZg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1802.8985507246377" y="189.50892857142856"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YJJ-kM-7tD">

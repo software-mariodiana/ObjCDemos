@@ -7,10 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "DetailViewController.h"
 
-@interface ViewController () <UITableViewDataSource, UISearchControllerDelegate>
+@interface ViewController () <UITableViewDataSource, UISearchControllerDelegate, UISearchBarDelegate>
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) NSArray* fruits;
+@property (nonatomic, strong) NSPredicate* filter;
+@property (nonatomic, strong) NSArray* tableData;
 @end
 
 @implementation ViewController
@@ -18,43 +21,76 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.fruits = @[@"Apple", @"Banana", @"Mango", @"Pear", @"Watermelon"];
+    self.tableData = self.fruits;
     
     UISearchController* searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.delegate = self;
-    searchController.searchBar.placeholder = @"Fruits";
     self.navigationItem.searchController = searchController;
+    
+    searchController.searchBar.placeholder = @"Search fruits";
+    searchController.searchBar.delegate = self;
+    
+    // iOS docs: If you use the same view controller to display the searchable content
+    // and search results, it is recommended that you set this property to NO.
+    searchController.obscuresBackgroundDuringPresentation = NO;
+    
+    self.title = @"Fruits";
+    
+    self.filter = [NSPredicate predicateWithBlock:^BOOL(NSString* fruit, NSDictionary* bindings) {
+        if ([[[self searchBar] text] length] > 0) {
+            // Case-insensitive match of any substring found.
+            return [[fruit lowercaseString] containsString:[[[self searchBar] text] lowercaseString]];
+        }
+        else {
+            return fruit;
+        }
+    }];
 }
 
-#pragma mark - Search controller
+- (UISearchBar *)searchBar
+{
+    return [[[self navigationItem] searchController] searchBar];
+}
+
+- (void)updateTableData
+{
+    self.tableData = [[self fruits] filteredArrayUsingPredicate:[self filter]];
+    [[self tableView] reloadData];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForCell:sender] animated:NO];
+    DetailViewController* dvc = [segue destinationViewController];
+    [dvc setFruitName:[[sender textLabel] text]];
+}
+
+#pragma mark - Search controller & search bar delegate methods
 
 - (void)didDismissSearchController:(UISearchController *)searchController
 {
-    NSLog(@"## %@ - %@", NSStringFromSelector(_cmd), self);
-    NSLog(@"## Search controller: %@", searchController);
+    [self updateTableData];
 }
 
-#pragma mark - Table view datasource
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self updateTableData];
+}
+
+#pragma mark - Table view datasource methods
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-    return [[self fruits] count];
+    return [[self tableData] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"FruitCell"];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:@"FruitCell"];
-    }
-    
-    cell.textLabel.text = [[self fruits] objectAtIndex:[indexPath row]];
-    
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ReuseIdentifier"];
+    cell.textLabel.text = [[self tableData] objectAtIndex:[indexPath row]];
     return cell;
 }
 
