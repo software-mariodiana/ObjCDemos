@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "DetailViewController.h"
 
-@interface ViewController () <UITableViewDataSource, UISearchControllerDelegate, UISearchBarDelegate>
+@interface ViewController () <UITableViewDataSource, UISearchResultsUpdating>
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) NSArray* fruits;
 @property (nonatomic, strong) NSPredicate* filter;
@@ -25,11 +25,10 @@
     self.tableData = self.fruits;
     
     UISearchController* searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    searchController.delegate = self;
     self.navigationItem.searchController = searchController;
     
     searchController.searchBar.placeholder = @"Search fruits";
-    searchController.searchBar.delegate = self;
+    searchController.searchResultsUpdater = self;
     
     // iOS docs: If you use the same view controller to display the searchable content
     // and search results, it is recommended that you set this property to NO.
@@ -69,14 +68,9 @@
     [dvc setFruitName:[[sender textLabel] text]];
 }
 
-#pragma mark - Search controller & search bar delegate methods
+#pragma mark - Search controller updating methods
 
-- (void)didDismissSearchController:(UISearchController *)searchController
-{
-    [self updateTableData];
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     [self updateTableData];
 }
